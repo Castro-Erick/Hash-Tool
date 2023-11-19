@@ -2,16 +2,25 @@ import subprocess
 
 PS_Command = 'Get-FileHash'
 
-File_Path = input("Enter an existing file path: ")
+print("Type \"quit\" at any point to exit the program.")
 
-Command_String = ['certutil', '-hashfile', File_Path, 'SHA256']
+while True:
+    hash_func = input("Enter the Hash Function you would like to use: ")
+    if hash_func.lower() == "quit":
+        break
 
-try:
-    Result = subprocess.run(Command_String, check=True, capture_output=True, text=True)
+    file_path = input("Enter an existing file path: ")
+    if file_path.lower() == "quit":
+        break
+
+    command_string = ['certutil', '-hashfile', file_path, hash_func.upper()]
+
+    try:
+        Result = subprocess.run(command_string, check=True, capture_output=True, text=True)
     
-    Output = Result.stdout
+        output = Result.stdout
 
-    print(Output)
+        print(output)
 
-except subprocess.CalledProcessError as e:
-    print(f'Error: {e}')
+    except subprocess.CalledProcessError as e:
+        print(f'Error: {e}')
